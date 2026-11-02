@@ -1,0 +1,105 @@
+<idea-plugin>
+    <id>com.keystrokequest</id>
+    <name>Keystroke Quest</name>
+    <vendor email="sorax2204@hotmail.com">Daniel Foth</vendor>
+
+    <description><![CDATA[
+        <p>Turn every keystroke into a celebration. <b>Keystroke Quest</b> adds explosive visual
+        effects, synthesized sound and an XP / leveling system to your editor.</p>
+        <ul>
+            <li><b>Effects:</b> blips with character labels, booms when deleting, newline streaks,
+                screen shake, caret trail, and fireworks on level-up.</li>
+            <li><b>Combo streak:</b> type fast to build a combo that scales effects and bonus XP.</li>
+            <li><b>Themes and sound packs:</b> Neon, Retro 8-bit, Minimal and Sad. All sounds are
+                synthesized at runtime, so there are no audio files to download.</li>
+            <li><b>IDE events:</b> confetti when a run passes, a red flash when it fails, fireworks on
+                commit, sparkles on refactorings and when a file becomes warning-free, and a flash on
+                breakpoint hits.</li>
+            <li><b>Progression:</b> XP, levels and titles, daily quests, achievements, daily streaks
+                and a shareable stats card.</li>
+            <li><b>Cats:</b> every level unlocks a unique virtual cat that roams your IDE and can be petted.</li>
+            <li><b>Wellbeing:</b> optional break reminders.</li>
+            <li><b>Accessibility:</b> reduced-effects mode turns off visuals, sound and shake while
+                XP keeps counting.</li>
+        </ul>
+        <p>Open <i>Settings | Tools | Keystroke Quest</i> to tune everything, or use the
+        Keystroke Quest tool window.</p>
+        <p>Inspired by the VS Code extension "Ridiculous Coding", the Godot plugin
+        "ridiculous_coding" by John Watson, and Textreme2 by Ash K.</p>
+    ]]></description>
+    <change-notes><![CDATA[
+        <b>1.3.3</b>
+        <ul>
+            <li>Trophy XP rewards are halved.</li>
+        </ul>
+        <b>1.3.2</b>
+        <ul>
+            <li>11 new cat trophies: cat collection milestones, Nine Lives, petting totals, best friends, and petting every cat.</li>
+        </ul>
+        <b>1.3.1</b>
+        <ul>
+            <li>Petting a cat now produces hearts only when the pet counts, and a cat can be petted once a second.</li>
+        </ul>
+        <b>1.3.0</b>
+        <ul>
+            <li>Renamed to <b>Keystroke Quest</b>.</li>
+            <li>Sitting cats: the tail now rests on the ground, and collars and scarves wrap across the neck
+                instead of sticking out at an angle.</li>
+        </ul>
+        <b>1.2.2</b>
+        <ul>
+            <li>"Reset XP" is now "Reset Progress" and clears everything earned: level, XP, cats, trophies,
+                stats and quests. Settings are kept.</li>
+        </ul>
+        <b>1.2.1</b>
+        <ul>
+            <li>Reset XP now also removes your cats.</li>
+            <li>The "Hello, World" trophy now pays 10 XP.</li>
+        </ul>
+        <b>1.2.0</b>
+        <ul>
+            <li>Every level now rewards you with a new, unique virtual cat that walks along your IDE
+                panels, jumps between them, grooms and naps. Click a cat to pet it (+1 XP, hearts).</li>
+            <li>Cats can be switched off, or limited to fewer on screen, for performance.</li>
+        </ul>
+        <b>1.1.0</b>
+        <ul>
+            <li>Trophies now pay 100-1000 XP, always more than a daily quest (30-40 XP).</li>
+            <li>Daily quests now roll over at midnight without restarting the IDE.</li>
+        </ul>
+        <b>1.0.0</b>
+        <ul>
+            <li>Initial release: effects, sound, XP and levels, combo, themes, quests, achievements,
+                run / commit / debugger / refactoring events, stats card export, break reminders.</li>
+        </ul>
+    ]]></change-notes>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends optional="true" config-file="rc-vcs.xml">com.intellij.modules.vcs</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <postStartupActivity implementation="com.keystrokequest.RcStartupActivity"/>
+        <statusBarWidgetFactory id="KeystrokeQuest.StatusBar"
+                                implementation="com.keystrokequest.RcStatusBarWidgetFactory"/>
+        <toolWindow id="Keystroke Quest" anchor="right"
+                    factoryClass="com.keystrokequest.RcToolWindowFactory"/>
+        <applicationConfigurable parentId="tools" id="com.keystrokequest.settings"
+                                 displayName="Keystroke Quest"
+                                 instance="com.keystrokequest.RcConfigurable"/>
+        <notificationGroup id="Keystroke Quest" displayType="BALLOON"/>
+    </extensions>
+
+    <actions>
+        <group id="KeystrokeQuest.Menu" text="Keystroke Quest" popup="true">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <action id="KeystrokeQuest.ToggleReduced" class="com.keystrokequest.ToggleReducedEffectsAction"
+                    text="Toggle Reduced Effects"/>
+            <action id="KeystrokeQuest.ToggleSound" class="com.keystrokequest.ToggleSoundAction"
+                    text="Toggle Sound"/>
+            <action id="KeystrokeQuest.ExportCard" class="com.keystrokequest.ExportStatsCardAction"
+                    text="Export Stats Card..."/>
+            <action id="KeystrokeQuest.ResetProgress" class="com.keystrokequest.ResetProgressAction"
+                    text="Reset Progress"/>
+        </group>
+    </actions>
+</idea-plugin>
